@@ -8,17 +8,10 @@ import {
     Burger,
     rem,
     Image,
-    Avatar,
     Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-    IconLogout,
-    IconSettings,
-    IconSwitchHorizontal,
-    IconChevronDown,
-} from "@tabler/icons-react";
-import { MantineLogo } from "@mantine/ds";
+import { IconSwitchHorizontal, IconChevronDown } from "@tabler/icons-react";
 
 const useStyles = createStyles((theme) => ({
     header: {
@@ -103,7 +96,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 function HeaderTabs({ user }) {
-    const { classes, theme, cx } = useStyles();
+    const { classes, cx } = useStyles();
     const [opened, { toggle }] = useDisclosure(false);
     const [userMenuOpened, setUserMenuOpened] = useState(false);
 
