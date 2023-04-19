@@ -2,6 +2,7 @@ import { Container, MantineProvider } from "@mantine/core";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./components/Home";
+import TaskList from "./components/TasksList";
 
 function App() {
     return (
@@ -16,7 +17,7 @@ function App() {
                     <Container size={"lg"}>
                         <Routes>
                             <Route path="/" element={<Home />} />
-                            <Route path="/" element={<Home />} />
+                            <Route path="/list" element={<TaskList />} />
                         </Routes>
                     </Container>
                 </BrowserRouter>
