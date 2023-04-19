@@ -16,6 +16,7 @@ function App() {
                     <Container size={"lg"}>
                         <Routes>
                             <Route path="/" element={<Home />} />
+                            <Route path="/" element={<Home />} />
                         </Routes>
                     </Container>
                 </BrowserRouter>

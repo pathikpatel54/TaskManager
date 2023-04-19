@@ -34,7 +34,7 @@ export default function AuthenticationForm() {
     });
 
     return (
-        <Container size={"sm"}>
+        <Container size={"xs"}>
             <Paper radius="sm" p="xl" withBorder>
                 <Text size="lg" weight={500}>
                     Welcome to Taskit, {type} with
