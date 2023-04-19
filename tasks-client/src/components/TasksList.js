@@ -1,4 +1,5 @@
 import {
+    ActionIcon,
     Button,
     Center,
     Container,
@@ -9,115 +10,152 @@ import {
     Table,
 } from "@mantine/core";
 import {
+    IconEdit,
     IconSearch,
-    IconSortAscending,
+    IconSettings,
     IconSortDescending,
+    IconTrash,
 } from "@tabler/icons-react";
 import { Paginator } from "../utils/paginator";
 import { useState } from "react";
+import { Tooltip } from "tabler-icons-react";
+import { Link } from "react-router-dom";
 
 const TaskList = () => {
     const elements = [
         {
             no: "1",
-            name: "Sample Task",
+            title: "Sample Task",
             description: "Sample Task Description",
             status: "In Progress",
-            due: "23/10/1995",
+            due: "10-22-1995",
         },
         {
             no: "2",
-            name: "Another Task",
+            title: "Another Task",
             description: "Another Task Description",
             status: "Completed",
-            due: "23/10/1995",
+            due: "10-22-1995",
         },
         {
             no: "3",
-            name: "Yet Task",
+            title: "Yet Task",
             description: "Another Task Description",
             status: "Completed",
-            due: "23/10/1995",
+            due: "10-22-1995",
         },
         {
             no: "4",
-            name: "Yet Another Task",
+            title: "Yet Another Task",
             description: "Another Task Description",
             status: "Completed",
-            due: "23/10/1995",
+            due: "10-22-1995",
         },
         {
             no: "5",
-            name: "Task",
+            title: "Task",
             description: "Another Task Description",
             status: "Completed",
-            due: "23/10/1995",
+            due: "10-22-1995",
         },
         {
             no: "6",
-            name: "Task",
+            title: "Task",
             description: "Another Task Description",
             status: "Completed",
-            due: "23/10/1995",
+            due: "10-22-1995",
         },
         {
             no: "7",
-            name: "Task",
+            title: "Task",
             description: "Another Task Description",
             status: "Completed",
-            due: "23/10/1995",
+            due: "10-22-1995",
         },
         {
             no: "8",
-            name: "Task",
+            title: "Task",
             description: "Another Task Description",
             status: "Completed",
-            due: "23/10/1995",
+            due: "10-22-1995",
         },
         {
             no: "9",
-            name: "Task",
+            title: "Task",
             description: "Another Task Description",
             status: "Completed",
-            due: "23/10/1995",
+            due: "10-22-1995",
         },
         {
             no: "10",
-            name: "Task",
+            title: "Task",
             description: "Another Task Description",
             status: "Completed",
-            due: "23/10/1995",
+            due: "10-20-1995",
         },
         {
             no: "11",
-            name: "Task",
+            title: "Task",
             description: "Another Task Description",
             status: "Completed",
-            due: "23/10/1995",
+            due: "10-21-1993",
         },
     ];
-    const [sortvalue, setSortValue] = useState("");
+    const [sortvalue, setSortValue] = useState(null);
     const [activePage, setPage] = useState(1);
     const [search, setSearch] = useState("");
-    const { data, total_pages } = Paginator(elements.filter((element) => {
-        return element.name.toLowerCase().includes(search.toLowerCase());
-    }), activePage);
+    const filtered = elements.filter((element) => {
+        return element.title.toLowerCase().includes(search.toLowerCase());
+    });
+    console.log(sortvalue);
+    const sorted =
+        sortvalue !== null
+            ? filtered.sort((a, b) => {
+                  if (sortvalue === "due") {
+                      return new Date(a.due) - new Date(b.due);
+                  } else {
+                      let x = a[sortvalue].toLowerCase();
+                      let y = b[sortvalue].toLowerCase();
+                      if (x < y) {
+                          return -1;
+                      }
+                      if (x > y) {
+                          return 1;
+                      }
+                      return 0;
+                  }
+              })
+            : filtered;
+
+    const { data, total_pages } = Paginator(sorted, activePage);
     console.log(data);
     const rows = data.map((element) => (
         <tr key={element.no}>
             <td>{element.no}</td>
-            <td>{element.name}</td>
+            <td>{element.title}</td>
             <td>{element.description}</td>
             <td>{element.status}</td>
             <td>{element.due}</td>
+            <td style={{ display: "flex", justifyContent: "flex-start" }}>
+                <ActionIcon variant="default" mr={10}>
+                    <IconEdit size="1rem" />
+                </ActionIcon>
+
+                <ActionIcon variant="default">
+                    <IconTrash size="1rem" />
+                </ActionIcon>
+            </td>
         </tr>
     ));
 
     return (
         <Container size={"lg"}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <Button>Add New Task</Button>
+                <Link to="/listnew" style={{ textDecoration: "none" }}>
+                    <Button>Add New Task</Button>
+                </Link>
                 <Select
+                    clearable
                     icon={<IconSortDescending />}
                     value={sortvalue}
                     onChange={setSortValue}
@@ -125,9 +163,10 @@ const TaskList = () => {
                     data={[
                         { value: "title", label: "Title" },
                         { value: "status", label: "Status" },
-                        { value: "duedate", label: "Due Date" },
+                        { value: "due", label: "Due Date" },
                     ]}
                 />
+                {console.log(sortvalue)}
                 <Input
                     rightSection={<IconSearch size={20} />}
                     placeholder="Search"
@@ -146,6 +185,7 @@ const TaskList = () => {
                         <th>Description</th>
                         <th>Status</th>
                         <th>Due date</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>{rows}</tbody>

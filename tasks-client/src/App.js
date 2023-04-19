@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./components/Home";
 import TaskList from "./components/TasksList";
+import TaskForm from "./components/TaskForm";
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/list" element={<TaskList />} />
+                            <Route path="/listnew" element={<TaskForm />} />
                         </Routes>
                     </Container>
                 </BrowserRouter>
