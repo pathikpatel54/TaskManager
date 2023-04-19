@@ -1,5 +1,15 @@
-import { Container, Input, Table } from "@mantine/core";
+import {
+    Button,
+    Center,
+    Container,
+    Input,
+    Pagination,
+    Space,
+    Table,
+} from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
+import { Paginator } from "../utils/paginator";
+import { useState } from "react";
 
 const elements = [
     {
@@ -9,10 +19,27 @@ const elements = [
         status: "In Progress",
         due: "23/10/1995",
     },
+    {
+        no: "2",
+        name: "Another Task",
+        description: "Another Task Description",
+        status: "Completed",
+        due: "23/10/1995",
+    },
 ];
 
 const TaskList = () => {
-    const rows = elements.map((element) => (
+    const [activePage, setPage] = useState(1);
+    const [search, setSearch] = useState("");
+    const { data, total_pages } = Paginator(
+        elements.filter((el) =>
+            el.name.toLowerCase().includes(search.toLowerCase())
+        ),
+        activePage,
+        5
+    );
+
+    const rows = data.map((element) => (
         <tr key={element.name}>
             <td>{element.no}</td>
             <td>{element.name}</td>
@@ -24,12 +51,17 @@ const TaskList = () => {
 
     return (
         <Container size={"lg"}>
-            <Input
-                icon={<IconSearch />}
-                placeholder="Search"
-                maw={200}
-                mb={20}
-            />
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Button>Add Task</Button>
+                <Input
+                    rightSection={<IconSearch size={20} />}
+                    placeholder="Search"
+                    maw={200}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+            </div>
+            <Space h={"xl"} />
             <Table striped withBorder withColumnBorders>
                 <thead>
                     <tr>
@@ -42,6 +74,14 @@ const TaskList = () => {
                 </thead>
                 <tbody>{rows}</tbody>
             </Table>
+            <Space h={"xl"} />
+            <Center>
+                <Pagination
+                    value={activePage}
+                    onChange={setPage}
+                    total={total_pages}
+                />
+            </Center>
         </Container>
     );
 };
