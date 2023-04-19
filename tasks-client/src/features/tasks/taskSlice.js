@@ -17,6 +17,11 @@ export const addTask = createAsyncThunk("tasks/addTask", async (task) => {
     return response.data;
 });
 
+export const updateTask = createAsyncThunk("tasks/updateTask", async (id) => {
+    const response = await axios.put(`api/tasks/${id}`, task);
+    return response.data;
+});
+
 export const deleteTask = createAsyncThunk("tasks/deleteTask", async (id) => {
     const response = await axios.delete(`/api/tasks/${id}`);
     return response.data;
