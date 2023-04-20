@@ -17,13 +17,11 @@ export const addTask = createAsyncThunk("tasks/addTask", async (task) => {
     return response.data;
 });
 
-export const updateTask = createAsyncThunk(
-    "tasks/updateTask",
-    async (id, task) => {
-        const response = await axios.put(`api/tasks/${id}`, task);
-        return response.data;
-    }
-);
+export const updateTask = createAsyncThunk("tasks/updateTask", async (task) => {
+    console.log(task);
+    const response = await axios.put(`/api/tasks/${task._id}`, task);
+    return response.data;
+});
 
 export const deleteTask = createAsyncThunk("tasks/deleteTask", async (id) => {
     const response = await axios.delete(`/api/tasks/${id}`);
@@ -52,7 +50,7 @@ const tasksSlice = createSlice({
             })
             .addCase(addTask.fulfilled, (state, action) => {
                 state.status = "fulfilled";
-                state.tasks.push(action.payload);
+                state.tasks.push(action.payload.task);
             })
             .addCase(addTask.rejected, (state, action) => {
                 state.status = "rejected";
@@ -64,8 +62,8 @@ const tasksSlice = createSlice({
             .addCase(updateTask.fulfilled, (state, action) => {
                 state.status = "fulfilled";
                 state.tasks = state.tasks.map((task) =>
-                    task.id === action.payload.id
-                        ? { ...task, ...action.payload }
+                    task._id === action.payload.task._id
+                        ? { ...task, ...action.payload.task }
                         : task
                 );
             })
@@ -78,8 +76,8 @@ const tasksSlice = createSlice({
             })
             .addCase(deleteTask.fulfilled, (state, action) => {
                 state.status = "fulfilled";
-                state.tasks = state.notes.filter(
-                    (task) => task.id !== action.payload
+                state.tasks = state.tasks.filter(
+                    (task) => task._id !== action.payload.task._id
                 );
             })
             .addCase(deleteTask.rejected, (state, action) => {

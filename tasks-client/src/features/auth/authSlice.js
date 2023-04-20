@@ -33,20 +33,23 @@ const authSlice = createSlice({
         builder
             .addCase(fetchAuth.pending, (state) => {
                 state.status = "pending";
+                state.error = "";
             })
             .addCase(fetchAuth.fulfilled, (state, action) => {
                 state.status = "fulfilled";
+                state.error = "";
                 state.user = action.payload.user;
             })
             .addCase(fetchAuth.rejected, (state, action) => {
                 state.status = "rejected";
-                state.error = action.error.message;
             })
             .addCase(registerUser.pending, (state) => {
                 state.status = "pending";
+                state.error = "";
             })
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.status = "fulfilled";
+                state.error = "";
                 state.user = action.payload.user;
             })
             .addCase(registerUser.rejected, (state, action) => {
@@ -55,9 +58,11 @@ const authSlice = createSlice({
             })
             .addCase(loginUser.pending, (state) => {
                 state.status = "pending";
+                state.error = "";
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.status = "fulfilled";
+                state.error = "";
                 state.user = action.payload.user;
             })
             .addCase(loginUser.rejected, (state, action) => {

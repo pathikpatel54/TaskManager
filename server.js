@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 const cookieSession = require("cookie-session");
 const keys = require("./config/keys");
 const app = express();
+const path = require("path");
 
 // Middleware
 app.use(bodyParser.json());
@@ -66,6 +67,13 @@ const tasksRoutes = require("./routes/tasks");
 
 app.use("/api/user", authRoutes);
 app.use("/api/tasks", tasksRoutes);
+app.use(express.static("tasks-client/build"));
+
+app.get("*", (req, res) => {
+    res.sendFile(
+        path.resolve(__dirname, "tasks-client", "build", "index.html")
+    );
+});
 
 // Start the server
 app.listen(keys.PORT, () => {

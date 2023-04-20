@@ -12,15 +12,20 @@ import {
     Anchor,
     Stack,
     Container,
+    Notification,
+    Space,
 } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    getAuthError,
+    getAuthStatus,
     loginUser,
     registerUser,
     selectAllAuth,
 } from "../features/auth/authSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { IconX } from "@tabler/icons-react";
 
 export default function AuthenticationForm() {
     const [type, toggle] = useToggle(["login", "register"]);
@@ -49,7 +54,8 @@ export default function AuthenticationForm() {
         }
     };
     const user = useSelector(selectAllAuth);
-    const status = useSelector()
+    const status = useSelector(getAuthStatus);
+    const error = useSelector(getAuthError);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -146,6 +152,42 @@ export default function AuthenticationForm() {
                         </Button>
                     </Group>
                 </form>
+                <Space h="md"></Space>
+                {status === "pending" ? (
+                    <Notification
+                        loading
+                        title="Authentication in progress"
+                        withCloseButton={false}
+                    >
+                        Please wait until while you are being authenticated.
+                    </Notification>
+                ) : (
+                    <></>
+                )}
+                {error === "Request failed with status code 401" ? (
+                    <Notification
+                        icon={<IconX size="1.1rem" />}
+                        title="Authentication failed"
+                        withCloseButton={false}
+                        color="red"
+                    >
+                        Please check your email or password.
+                    </Notification>
+                ) : (
+                    <></>
+                )}
+                {error === "Request failed with status code 500" ? (
+                    <Notification
+                        icon={<IconX size="1.1rem" />}
+                        title="Registration failed"
+                        withCloseButton={false}
+                        color="red"
+                    >
+                        Email address is already registered.
+                    </Notification>
+                ) : (
+                    <></>
+                )}
             </Paper>
         </Container>
     );

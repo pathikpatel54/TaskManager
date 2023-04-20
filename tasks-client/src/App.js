@@ -7,12 +7,14 @@ import TaskForm from "./components/TaskForm";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchAuth } from "./features/auth/authSlice";
+import { fetchTasks } from "./features/tasks/taskSlice";
 
 function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchAuth());
+        dispatch(fetchTasks());
     }, []);
 
     return (
@@ -28,7 +30,11 @@ function App() {
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/list" element={<TaskList />} />
-                            <Route path="/listnew" element={<TaskForm />} />
+                            <Route path="/list/new" element={<TaskForm />} />
+                            <Route
+                                path="/list/edit/:id"
+                                element={<TaskForm />}
+                            />
                         </Routes>
                     </Container>
                 </BrowserRouter>

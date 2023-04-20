@@ -107,7 +107,7 @@ function HeaderTabs() {
         <div className={classes.header}>
             <Container className={classes.mainSection}>
                 <Group position="apart">
-                    <Image src="logo.svg" maw={120} p={5} />
+                    <Image src="/logo.svg" maw={120} p={5} />
 
                     <Burger
                         opened={opened}

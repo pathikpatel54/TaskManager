@@ -1,22 +1,24 @@
 import { useForm } from "@mantine/form";
-import {
-    NumberInput,
-    TextInput,
-    Button,
-    Box,
-    Textarea,
-    Select,
-} from "@mantine/core";
+import { TextInput, Button, Box, Textarea, Select } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    addTask,
+    selectAllTasks,
+    updateTask,
+} from "../features/tasks/taskSlice";
+import { useEffect } from "react";
 
 const TaskForm = () => {
+    let { id } = useParams();
+    const task = useSelector(selectAllTasks).find((task) => task._id == id);
     const form = useForm({
         initialValues: {
-            title: "",
-            description: "",
-            status: "",
-            due: new Date(),
+            title: task?.title,
+            description: task?.description,
+            status: task?.status,
+            due: task?.due ? new Date(task?.due) : new Date(),
         },
 
         // functions will be used to validate values at corresponding key
@@ -32,10 +34,31 @@ const TaskForm = () => {
                 value < 18 ? "You must be at least 18 to register" : null,
         },
     });
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const onFormSubmit = (task) => {
+        if (id) {
+            task._id = id;
+            dispatch(updateTask(task));
+        } else {
+            dispatch(addTask(task));
+        }
+        navigate("/");
+    };
+
+    useEffect(() => {
+        form.setValues({
+            title: task?.title,
+            description: task?.description,
+            status: task?.status,
+            due: task?.due ? new Date(task?.due) : new Date(),
+        });
+    }, [task]);
 
     return (
         <Box maw={320} mx="auto">
-            <form onSubmit={form.onSubmit((values) => console.log(values))}>
+            <form onSubmit={form.onSubmit(onFormSubmit)}>
                 <TextInput
                     label="Title"
                     placeholder="Title"

@@ -36,9 +36,11 @@ router.post("/", async (req, res) => {
 // Edit a task
 router.put("/:id", async (req, res) => {
     const { id } = req.params;
+    console.log(id);
     const { title, description, status, due } = req.body;
     try {
         const task = await Task.findById(id);
+        console.log(task);
         if (task) {
             task.title = title || task.title;
             task.description = description || task.description;
@@ -59,9 +61,8 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
     const { id } = req.params;
     try {
-        const task = await Task.findById(id);
+        const task = await Task.findByIdAndRemove(id);
         if (task) {
-            await task.remove();
             res.json({ message: "Task deleted successfully", task });
         } else {
             res.status(404).json({ message: "Task not found" });
