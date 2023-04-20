@@ -17,10 +17,13 @@ export const addTask = createAsyncThunk("tasks/addTask", async (task) => {
     return response.data;
 });
 
-export const updateTask = createAsyncThunk("tasks/updateTask", async (id) => {
-    const response = await axios.put(`api/tasks/${id}`, task);
-    return response.data;
-});
+export const updateTask = createAsyncThunk(
+    "tasks/updateTask",
+    async (id, task) => {
+        const response = await axios.put(`api/tasks/${id}`, task);
+        return response.data;
+    }
+);
 
 export const deleteTask = createAsyncThunk("tasks/deleteTask", async (id) => {
     const response = await axios.delete(`/api/tasks/${id}`);
@@ -62,8 +65,8 @@ const tasksSlice = createSlice({
                 state.status = "fulfilled";
                 state.tasks = state.tasks.map((task) =>
                     task.id === action.payload.id
-                        ? { ...item, ...action.payload }
-                        : item
+                        ? { ...task, ...action.payload }
+                        : task
                 );
             })
             .addCase(updateTask.rejected, (state, action) => {

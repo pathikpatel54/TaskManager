@@ -13,6 +13,14 @@ import {
     Stack,
     Container,
 } from "@mantine/core";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    loginUser,
+    registerUser,
+    selectAllAuth,
+} from "../features/auth/authSlice";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function AuthenticationForm() {
     const [type, toggle] = useToggle(["login", "register"]);
@@ -32,6 +40,23 @@ export default function AuthenticationForm() {
                     : null,
         },
     });
+    const dispatch = useDispatch();
+    const onFormSubmit = (user) => {
+        if (type === "register") {
+            dispatch(registerUser(user));
+        } else {
+            dispatch(loginUser(user));
+        }
+    };
+    const user = useSelector(selectAllAuth);
+    const status = useSelector()
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user.name) {
+            navigate("/list");
+        }
+    }, [user]);
 
     return (
         <Container size={"xs"}>
@@ -40,7 +65,7 @@ export default function AuthenticationForm() {
                     Welcome to Taskit, {type} with
                 </Text>
                 <Divider mb={20} mt={20}></Divider>
-                <form onSubmit={form.onSubmit(() => {})}>
+                <form onSubmit={form.onSubmit(onFormSubmit)}>
                     <Stack>
                         {type === "register" && (
                             <TextInput

@@ -43,7 +43,7 @@ router.get("/", (req, res) => {
 // Logout
 router.get("/logout", (req, res) => {
     req.logout();
-    res.json({ message: "Logged out successfully" });
+    res.status(303).redirect("/");
 });
 
 module.exports = router;

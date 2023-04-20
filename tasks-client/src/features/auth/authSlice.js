@@ -25,11 +25,6 @@ export const loginUser = createAsyncThunk("auth/loginUser", async (user) => {
     return response.data;
 });
 
-export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
-    const response = await axios.get("/api/user/logout");
-    return response.data;
-});
-
 const authSlice = createSlice({
     name: "auth",
     initialState,
@@ -41,7 +36,7 @@ const authSlice = createSlice({
             })
             .addCase(fetchAuth.fulfilled, (state, action) => {
                 state.status = "fulfilled";
-                state.user = action.payload;
+                state.user = action.payload.user;
             })
             .addCase(fetchAuth.rejected, (state, action) => {
                 state.status = "rejected";
@@ -52,7 +47,7 @@ const authSlice = createSlice({
             })
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.status = "fulfilled";
-                state.user = action.payload;
+                state.user = action.payload.user;
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.status = "rejected";
@@ -63,20 +58,9 @@ const authSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.status = "fulfilled";
-                state.user = action.payload;
+                state.user = action.payload.user;
             })
             .addCase(loginUser.rejected, (state, action) => {
-                state.status = "rejected";
-                state.error = action.error.message;
-            })
-            .addCase(logoutUser.pending, (state) => {
-                state.status = "pending";
-            })
-            .addCase(logoutUser.fulfilled, (state, action) => {
-                state.status = "fulfilled";
-                state.user = {};
-            })
-            .addCase(logoutUser.rejected, (state, action) => {
                 state.status = "rejected";
                 state.error = action.error.message;
             });

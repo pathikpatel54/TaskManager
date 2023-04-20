@@ -4,8 +4,17 @@ import Header from "./components/Header";
 import Home from "./components/Home";
 import TaskList from "./components/TasksList";
 import TaskForm from "./components/TaskForm";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchAuth } from "./features/auth/authSlice";
 
 function App() {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchAuth());
+    }, []);
+
     return (
         <MantineProvider
             theme={{ colorScheme: "dark" }}

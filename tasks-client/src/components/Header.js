@@ -12,6 +12,8 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconSwitchHorizontal, IconChevronDown } from "@tabler/icons-react";
+import { useSelector } from "react-redux";
+import { selectAllAuth } from "../features/auth/authSlice";
 
 const useStyles = createStyles((theme) => ({
     header: {
@@ -95,10 +97,11 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-function HeaderTabs({ user }) {
+function HeaderTabs() {
     const { classes, cx } = useStyles();
     const [opened, { toggle }] = useDisclosure(false);
     const [userMenuOpened, setUserMenuOpened] = useState(false);
+    const user = useSelector(selectAllAuth);
 
     return (
         <div className={classes.header}>
@@ -112,7 +115,7 @@ function HeaderTabs({ user }) {
                         className={classes.burger}
                         size="sm"
                     />
-                    {user ? (
+                    {user.name ? (
                         <Menu
                             width={260}
                             position="bottom-end"
@@ -134,7 +137,7 @@ function HeaderTabs({ user }) {
                                             sx={{ lineHeight: 1 }}
                                             mr={3}
                                         >
-                                            Sample
+                                            {user.name}
                                         </Text>
                                         <IconChevronDown
                                             size={rem(12)}
@@ -151,8 +154,10 @@ function HeaderTabs({ user }) {
                                             stroke={1.5}
                                         />
                                     }
+                                    component="a"
+                                    href="/api/user/logout"
                                 >
-                                    Change account
+                                    Logout
                                 </Menu.Item>
                             </Menu.Dropdown>
                         </Menu>
