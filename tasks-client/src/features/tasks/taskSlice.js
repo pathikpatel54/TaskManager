@@ -55,6 +55,21 @@ const tasksSlice = createSlice({
                 state.status = "rejected";
                 state.error = action.error.message;
             })
+            .addCase(updateTask.pending, (state) => {
+                state.status = "pending";
+            })
+            .addCase(updateTask.fulfilled, (state, action) => {
+                state.status = "fulfilled";
+                state.tasks = state.tasks.map((task) =>
+                    task.id === action.payload.id
+                        ? { ...item, ...action.payload }
+                        : item
+                );
+            })
+            .addCase(updateTask.rejected, (state, action) => {
+                state.status = "rejected";
+                state.error = action.error.message;
+            })
             .addCase(deleteTask.pending, (state) => {
                 state.status = "pending";
             })
