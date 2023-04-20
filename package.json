@@ -1,0 +1,28 @@
+{
+  "name": "tasksapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pathikpatel54/TaskApp.git"
+  },
+  "author": "pathik",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pathikpatel54/TaskApp/issues"
+  },
+  "homepage": "https://github.com/pathikpatel54/TaskApp#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cookie-session": "^2.0.0",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.4",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0"
+  }
+}

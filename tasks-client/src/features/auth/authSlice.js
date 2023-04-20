@@ -12,6 +12,24 @@ export const fetchAuth = createAsyncThunk("auth/fetchAuth", async () => {
     return response.data;
 });
 
+export const registerUser = createAsyncThunk(
+    "auth/registerUser",
+    async (user) => {
+        const response = await axios.post("/api/user/register", user);
+        return response.data;
+    }
+);
+
+export const loginUser = createAsyncThunk("auth/loginUser", async (user) => {
+    const response = await axios.post("/api/user/login", user);
+    return response.data;
+});
+
+export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
+    const response = await axios.get("/api/user/logout");
+    return response.data;
+});
+
 const authSlice = createSlice({
     name: "auth",
     initialState,
@@ -26,6 +44,39 @@ const authSlice = createSlice({
                 state.user = action.payload;
             })
             .addCase(fetchAuth.rejected, (state, action) => {
+                state.status = "rejected";
+                state.error = action.error.message;
+            })
+            .addCase(registerUser.pending, (state) => {
+                state.status = "pending";
+            })
+            .addCase(registerUser.fulfilled, (state, action) => {
+                state.status = "fulfilled";
+                state.user = action.payload;
+            })
+            .addCase(registerUser.rejected, (state, action) => {
+                state.status = "rejected";
+                state.error = action.error.message;
+            })
+            .addCase(loginUser.pending, (state) => {
+                state.status = "pending";
+            })
+            .addCase(loginUser.fulfilled, (state, action) => {
+                state.status = "fulfilled";
+                state.user = action.payload;
+            })
+            .addCase(loginUser.rejected, (state, action) => {
+                state.status = "rejected";
+                state.error = action.error.message;
+            })
+            .addCase(logoutUser.pending, (state) => {
+                state.status = "pending";
+            })
+            .addCase(logoutUser.fulfilled, (state, action) => {
+                state.status = "fulfilled";
+                state.user = {};
+            })
+            .addCase(logoutUser.rejected, (state, action) => {
                 state.status = "rejected";
                 state.error = action.error.message;
             });
