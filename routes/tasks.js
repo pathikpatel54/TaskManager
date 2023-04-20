@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
 const express = require('express');
-
 const router = express.Router();
 const Task = require('../models/task');
 
@@ -30,14 +28,3 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
-
-const taskSchema = new mongoose.Schema({
-  title: String,
-  description: String,
-  completed: Boolean,
-  created_at: { type: Date, default: Date.now }
-});
-
-const Task = mongoose.model('Task', taskSchema);
-
-module.exports = Task;
