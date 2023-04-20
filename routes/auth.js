@@ -7,10 +7,10 @@ const User = require("../models/User");
 
 // Register a new user
 router.post("/register", async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ email, password: hashedPassword });
+        const user = new User({ name, email, password: hashedPassword });
         await user.save();
         req.login(user, (err) => {
             if (err) {

@@ -16,9 +16,15 @@ router.get("/", async (req, res) => {
 
 // Add a new task
 router.post("/", async (req, res) => {
-    const { title, description } = req.body;
+    const { title, description, status, due } = req.body;
     try {
-        const task = new Task({ title, description, user: req.user._id });
+        const task = new Task({
+            title,
+            description,
+            user: req.user._id,
+            status,
+            due,
+        });
         await task.save();
         res.status(201).json({ message: "Task created successfully", task });
     } catch (err) {
@@ -30,12 +36,14 @@ router.post("/", async (req, res) => {
 // Edit a task
 router.put("/:id", async (req, res) => {
     const { id } = req.params;
-    const { title, description } = req.body;
+    const { title, description, status, due } = req.body;
     try {
         const task = await Task.findById(id);
         if (task) {
             task.title = title || task.title;
             task.description = description || task.description;
+            task.status = status || task.status;
+            task.due = due || task.due;
             await task.save();
             res.json({ message: "Task updated successfully", task });
         } else {
