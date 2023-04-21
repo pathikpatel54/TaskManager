@@ -12,12 +12,12 @@ import { useEffect } from "react";
 
 const TaskForm = () => {
     let { id } = useParams();
-    const task = useSelector(selectAllTasks).find((task) => task._id == id);
+    const task = useSelector(selectAllTasks).find((task) => task._id === id);
     const form = useForm({
         initialValues: {
-            title: task?.title,
-            description: task?.description,
-            status: task?.status,
+            title: task?.title || "",
+            description: task?.description || "",
+            status: task?.status || "",
             due: task?.due ? new Date(task?.due) : new Date(),
         },
 
@@ -29,9 +29,25 @@ const TaskForm = () => {
                 value.length < 2
                     ? "Description must have at least 2 letters"
                     : null,
-            status: (value) => (value.length < 2 ? "Status invalid" : null),
-            due: (value) =>
-                value < 18 ? "You must be at least 18 to register" : null,
+            status: (value) => {
+                switch (value) {
+                    case "In Progress":
+                        return null;
+                    case "Pending":
+                        return null;
+                    case "Completed":
+                        return null;
+                    default:
+                        return "Select status from the drop down";
+                }
+            },
+            due: (value) => {
+                if (value instanceof Date) {
+                    return null;
+                } else {
+                    return "Select date from the drop down";
+                }
+            },
         },
     });
     const dispatch = useDispatch();
@@ -49,9 +65,9 @@ const TaskForm = () => {
 
     useEffect(() => {
         form.setValues({
-            title: task?.title,
-            description: task?.description,
-            status: task?.status,
+            title: task?.title || "",
+            description: task?.description || "",
+            status: task?.status || "",
             due: task?.due ? new Date(task?.due) : new Date(),
         });
     }, [task]);

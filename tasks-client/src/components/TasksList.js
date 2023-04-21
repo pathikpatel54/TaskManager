@@ -12,7 +12,6 @@ import {
 import {
     IconEdit,
     IconSearch,
-    IconSettings,
     IconSortDescending,
     IconTrash,
 } from "@tabler/icons-react";
@@ -31,15 +30,29 @@ const TaskList = () => {
     const [sortvalue, setSortValue] = useState(null);
     const [activePage, setPage] = useState(1);
     const [search, setSearch] = useState("");
-    const filtered = elements.filter((element) => {
-        return element.title.toLowerCase().includes(search.toLowerCase());
-    });
     const dispatch = useDispatch();
+    const filtered = elements.filter((element) => {
+        return (
+            element.title.toLowerCase().includes(search.toLowerCase()) ||
+            element.description.toLowerCase().includes(search.toLowerCase())
+        );
+    });
+
     const sorted =
         sortvalue !== null
             ? filtered.sort((a, b) => {
                   if (sortvalue === "due") {
                       return new Date(a.due) - new Date(b.due);
+                  } else if (sortvalue === "status") {
+                      const desiredOrder = [
+                          "Pending",
+                          "In Progress",
+                          "Completed",
+                      ];
+                      return (
+                          desiredOrder.indexOf(a[sortvalue]) -
+                          desiredOrder.indexOf(b[sortvalue])
+                      );
                   } else {
                       let x = a[sortvalue].toLowerCase();
                       let y = b[sortvalue].toLowerCase();

@@ -38,9 +38,16 @@ export default function AuthenticationForm() {
         },
 
         validate: {
+            name: (val) => {
+                if (type === "register" && val.length < 2) {
+                    return "Name must have at least 2 characters";
+                } else {
+                    return null;
+                }
+            },
             email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
             password: (val) =>
-                val.length <= 6
+                val.length < 6
                     ? "Password should include at least 6 characters"
                     : null,
         },
@@ -62,7 +69,7 @@ export default function AuthenticationForm() {
         if (user.name) {
             navigate("/list");
         }
-    }, [user]);
+    }, [user, navigate]);
 
     return (
         <Container size={"xs"}>
@@ -75,6 +82,7 @@ export default function AuthenticationForm() {
                     <Stack>
                         {type === "register" && (
                             <TextInput
+                                required
                                 label="Name"
                                 placeholder="Your name"
                                 value={form.values.name}
@@ -84,6 +92,7 @@ export default function AuthenticationForm() {
                                         event.currentTarget.value
                                     )
                                 }
+                                error={form.errors.name && "Invalid name"}
                                 radius="sm"
                             />
                         )}
